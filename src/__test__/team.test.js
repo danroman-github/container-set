@@ -1,8 +1,7 @@
 import Team from '../js/team';
-import Character from '../js/character';
-import Bowman from '../js/Bowman.js';
-import Swordsman from '../js/Swordsman.js';
-import Magician from '../js/Magician.js';
+import Bowman from '../js/bowman.js';
+import Swordsman from '../js/swordsman.js';
+import Magician from '../js/magician.js';
 
 describe('Team class', () => {
     let team;
@@ -28,6 +27,14 @@ describe('Team class', () => {
             expect(team.toArray()).toEqual([]);
         });
 
+        test('should throw error when adding duplicate character', () => {
+            team.add(character1);
+
+            expect(() => team.add(character1)).toThrow('Этот персонаж уже есть в команде');
+            expect(() => team.add(character1)).toThrow(/уже есть в команде/);
+            expect(team.size()).toBe(1);
+        });
+
         test('should throw error when adding non-Character object', () => {
             expect(() => team.add({})).toThrow('Можно добавлять только объекты класса Character');
             expect(() => team.add(null)).toThrow('Можно добавлять только объекты класса Character');
@@ -35,6 +42,17 @@ describe('Team class', () => {
             expect(() => team.add('string')).toThrow('Можно добавлять только объекты класса Character');
             expect(() => team.add(123)).toThrow('Можно добавлять только объекты класса Character');
             expect(() => team.add([])).toThrow('Можно добавлять только объекты класса Character');
+        });
+
+        test('should allow adding different character instances with same properties', () => {
+            const character1Copy = new Bowman('Legolas');
+
+            team.add(character1);
+            team.add(character1Copy);
+
+            expect(team.size()).toBe(2);
+            expect(team.has(character1)).toBe(true);
+            expect(team.has(character1Copy)).toBe(true);
         });
 
         test('should work with array spread', () => {

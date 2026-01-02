@@ -5,11 +5,7 @@ export default class Team {
         this.members = new Set();
     }
 
-    /**
-     * Добавляет персонажа в команду
-     * @param {Character} character - объект персонажа
-     * @throws {Error} если персонаж уже есть в команде
-     */
+    // Добавляет персонажа в команду
     add(character) {
         // Проверка типа
         if (!(character instanceof Character)) {
@@ -18,58 +14,43 @@ export default class Team {
 
         // Проверка на дубликат
         if (this.members.has(character)) {
-            throw new Error('Этот персонаж уже добавлен');
+            throw new Error('Этот персонаж уже есть в команде');
         }
 
         this.members.add(character);
     }
 
-    /**
-     * Добавляет несколько персонажей в команду
-     * @param {...Character} characters - объекты персонажей
-     */
+    // Добавляет несколько персонажей в команду
     addAll(...characters) {
-        characters.forEach(character => {
-            if (!(character instanceof Character)) {
-                throw new Error('Можно добавлять только объекты класса Character');
-            }
-            try {
-                this.add(character);
-            } catch (error) {
+        // Валидируем всех перед добавлением
+        const invalidCharacters = characters.filter(char => !(char instanceof Character));
+        if (invalidCharacters.length > 0) {
+            throw new Error('Можно добавлять только объекты класса Character');
+        }
 
-                // Для дубликатов просто пропускаем
+        // Добавляем только уникальных
+        characters.forEach(character => {
+            if (!this.members.has(character)) {
+                this.members.add(character);
             }
         });
     }
 
-    /**
-     * Конвертирует Set в массив
-     * @returns {Array} массив персонажей
-     */
+    // Конвертирует Set в массив
     toArray() {
         return Array.from(this.members);
     }
 
-    /**
-     * Очищает команду
-     */
     clear() {
         this.members.clear();
     }
 
-    /**
-     * Возвращает количество персонажей в команде
-     * @returns {number}
-     */
+    // Возвращает количество персонажей в команде
     size() {
         return this.members.size;
     }
 
-    /**
-     * Проверяет, есть ли персонаж в команде
-     * @param {Character} character
-     * @returns {boolean}
-     */
+    // Проверяет, есть ли персонаж в команде
     has(character) {
         return this.members.has(character);
     }
