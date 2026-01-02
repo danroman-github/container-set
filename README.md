@@ -25,4 +25,4 @@ class Team {
 
 Написать unit-тесты, которые обеспечивают 100% покрытие функций и классов.
 
-[![Tests](https://github.com/danroman-github/methods/actions/workflows/main.yml/badge.svg)](https://github.com/danroman-github/methods/actions/workflows/main.yml)
+[![Tests](https://github.com/danroman-github/container-set/actions/workflows/main.yml/badge.svg)](https://github.com/danroman-github/container-set/actions/workflows/main.yml)
