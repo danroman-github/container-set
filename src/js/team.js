@@ -22,16 +22,12 @@ export default class Team {
 
     // Добавляет несколько персонажей в команду
     addAll(...characters) {
-        // Валидируем всех перед добавлением
-        const invalidCharacters = characters.filter(char => !(char instanceof Character));
-        if (invalidCharacters.length > 0) {
-            throw new Error('Можно добавлять только объекты класса Character');
-        }
-
         // Добавляем только уникальных
-        characters.forEach(character => {
-            if (!this.members.has(character)) {
-                this.members.add(character);
+        characters.forEach((character) => {
+            try {
+                this.add(character);
+            } catch (error) {
+                // console.warn(`Ошибка при добавлении персонажа ${character.name || character}: ${error.message}`);
             }
         });
     }

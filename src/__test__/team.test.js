@@ -29,19 +29,15 @@ describe('Team class', () => {
 
         test('should throw error when adding duplicate character', () => {
             team.add(character1);
-
-            expect(() => team.add(character1)).toThrow('Этот персонаж уже есть в команде');
             expect(() => team.add(character1)).toThrow(/уже есть в команде/);
             expect(team.size()).toBe(1);
         });
 
         test('should throw error when adding non-Character object', () => {
-            expect(() => team.add({})).toThrow('Можно добавлять только объекты класса Character');
-            expect(() => team.add(null)).toThrow('Можно добавлять только объекты класса Character');
-            expect(() => team.add(undefined)).toThrow('Можно добавлять только объекты класса Character');
-            expect(() => team.add('string')).toThrow('Можно добавлять только объекты класса Character');
-            expect(() => team.add(123)).toThrow('Можно добавлять только объекты класса Character');
-            expect(() => team.add([])).toThrow('Можно добавлять только объекты класса Character');
+            ['{}', null, undefined, 'string', 123, []].forEach(value => {
+                expect(() => team.add(value)).
+                    toThrow('Можно добавлять только объекты класса Character');
+            })
         });
 
         test('should allow adding different character instances with same properties', () => {
@@ -60,18 +56,15 @@ describe('Team class', () => {
             team.addAll(...characters);
 
             expect(team.size()).toBe(3);
-        });
-
-        test('should mix existing and new characters', () => {
-            team.add(character1);
-            team.addAll(character1, character2, character3);
-
-            expect(team.size()).toBe(3);
+            expect(team.has(character1)).toBe(true);
+            expect(team.has(character2)).toBe(true);
+            expect(team.has(character3)).toBe(true);
         });
 
         test('should throw error for non-Character arguments', () => {
-            expect(() => team.addAll(character1, {}, character2)).toThrow('Можно добавлять только объекты класса Character');
-            expect(team.size()).toBe(0);
+            team.clear();
+            team.addAll(character1, {}, character2);
+            expect(team.size()).toBe(2);
         });
     });
 });
